@@ -1,0 +1,23 @@
+{
+    "os": "Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.31",
+    "python": "3.10.4",
+    "heartbeatAt": "2022-08-28T19:20:33.347579",
+    "startedAt": "2022-08-28T19:20:32.117961",
+    "docker": null,
+    "gpu": "NVIDIA GeForce RTX 3050 Laptop GPU",
+    "gpu_count": 1,
+    "cpu_count": 16,
+    "cuda": null,
+    "args": null,
+    "state": "running",
+    "program": "<python with no main file>",
+    "git": {
+        "remote": "https://www.github.com/EugenHotaj/pytorch-generative",
+        "commit": "ac5aee0876092f33d293d3f69ee5568d70093d6c"
+    },
+    "email": null,
+    "root": "/home/munasir/image-gpt/igpt-pytorch/pytorch-generative",
+    "host": "LAPTOP-OH6UASCL",
+    "username": "munasir",
+    "executable": "/home/munasir/anaconda3/envs/pytorch-gen2/bin/python"
+}

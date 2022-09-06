@@ -1,0 +1,62 @@
+diff --git a/pytorch_generative/models/base.py b/pytorch_generative/models/base.py
+index 5703f90..239fb5d 100644
+--- a/pytorch_generative/models/base.py
++++ b/pytorch_generative/models/base.py
+@@ -6,6 +6,8 @@ import torch
+ from torch import distributions
+ from torch import nn
+ 
++import random
++
+ 
+ def _default_sample_fn(logits):
+     return distributions.Bernoulli(logits=logits).sample()
+@@ -81,7 +83,11 @@ class AutoregressiveModel(GenerativeModel):
+             for row in range(h):
+                 for col in range(w):
+                     out = self.forward(conditioned_on)[:, :, row, col]
+-                    out = self._sample_fn(out).view(n, c)
++                    #out = self._sample_fn(out).view(n, c)
++
++                    indices = torch.tensor(random.sample(range(w), col))
++                    indices = torch.tensor(indices)
++                    out = out[indices]
+                     conditioned_on[:, :, row, col] = torch.where(
+                         conditioned_on[:, :, row, col] < 0,
+                         out,
+diff --git a/pytorch_generative/trainer.py b/pytorch_generative/trainer.py
+index 4a82562..a933242 100644
+--- a/pytorch_generative/trainer.py
++++ b/pytorch_generative/trainer.py
+@@ -13,6 +13,7 @@ from torch.nn import parallel
+ from torch.nn import utils
+ from torch.utils import tensorboard
+ 
++import wandb
+ 
+ class Trainer:
+     """An object which encapsulates the training and evaluation loop.
+@@ -277,6 +278,11 @@ class Trainer:
+                     sum_metrics[key] += metric * n_batch_examples
+             metrics = {key: metric / n_examples for key, metric in sum_metrics.items()}
+             self._log_metrics(metrics, training=False)
++            
++            #### WANDB
++            #wandb.log({"loss": self.loss_fn})
++            print(metrics)
++            wandb.log(metrics)
+ 
+             self._epoch += 1
+             self._save_checkpoint()
+diff --git a/requirements.txt b/requirements.txt
+index fc4689c..9df8b88 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,5 +1,5 @@
+ Pillow>=7.2.0
+ numpy>=1.18.4
+ tensorboard>=2.3.0
+-torch>=1.5.1
+-torchvision>=0.6.1
++torch>=1.5.1+cu111
++torchvision>=0.6.1+cu111
