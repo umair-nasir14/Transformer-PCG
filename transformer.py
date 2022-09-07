@@ -47,7 +47,7 @@ class TransformerBlock(nn.Module):
 class ImageGPT(base.AutoregressiveModel):
     """The ImageGPT Model.
 
-    Unlike [1], our implementation operates over image inputs, instead of
+    This implementation operates over image inputs, instead of
     embeddings. Furthermore, we implement skip connections from each block to the
     output. We find that this makes training a lot more stable and allows for much
     faster convergence.
